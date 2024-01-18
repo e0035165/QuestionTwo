@@ -113,7 +113,7 @@ int getForwardNumber(Node* startnode, string value)
                     }
                     temp = temp_failure;
                 } else {
-                    temp=temp_failure;
+                    temp=temp_failure->getCharNode(value[i]);
                 }
                 //cout << "else checking : " << temp->S << endl;
             }
@@ -187,8 +187,8 @@ Node* createForwardTrie(string* allwords, int n)
         Node* parent_failure = tester->parent->failure;
 //        cout << tester->S << " " << tester->id << endl;
 //        cout << parent->S << " " << parent->id << endl;
-        
-        
+//        
+//        
 //        cout << "Parent " << parent->S << "Parent id: " << parent->id << " Child: " << tester->S << " Child id: " << tester->id << endl;
 //        cout << "Parent failure: " << parent_failure->S << endl;
         if(parent_failure == parent)
@@ -226,6 +226,7 @@ Node* createForwardTrie(string* allwords, int n)
 int main(int argc, const char * argv[]) {
     fstream finout("File.txt", ios::in | ios::out);
     string numbers;
+    
     getline(finout,numbers);
     //cout << numbers;
     int n = stoi(numbers);
