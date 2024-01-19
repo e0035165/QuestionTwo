@@ -79,7 +79,52 @@ struct Node{
     
 };
 int getForwardNumber(Node* startnode, string value);
+int getBackwardNumber(Node* startnode, string value);
 
+int getBackwardNumber(Node* startnode, string value)
+{
+    Node* temp = startnode;
+    for(int i=(int)value.length()-1;i>=0;--i)
+    {
+        //cout << "Current value: " << value[i] << endl;
+        if(int(value[i])>=49 && int(value[i])<=57)
+        {
+            return int(value[i]) - int('0');
+        } else {
+            if(temp->getCharNode(value[i])!=NULL)
+            {
+                temp = temp->getCharNode(value[i]);
+                //cout << "If internal checking: " << temp->S << endl;
+            } else {
+                Node* temp_failure = temp->failure;
+                while(temp_failure->getCharNode(value[i])==NULL && temp_failure!=startnode)
+                {
+                    temp_failure = temp_failure->failure;
+                }
+                if(temp_failure==startnode)
+                {
+                    //cout << "Inside startnode: " << temp_failure->S << endl;
+                    if(temp_failure->getCharNode(value[i])!=NULL)
+                    {
+                        //cout << "On" << endl;
+                        temp_failure = temp_failure->getCharNode(value[i]);
+                        //cout << temp_failure->S << endl;
+                    }
+                    temp = temp_failure;
+                } else {
+                    temp=temp_failure->getCharNode(value[i]);
+                }
+                //cout << "else checking : " << temp->S << endl;
+            }
+            if(temp->endofword==true)
+            {
+                //cout << "Tester: " << temp->number << endl;
+                return temp->number;
+            }
+        }
+    }
+    return -1;
+}
 
 int getForwardNumber(Node* startnode, string value)
 {
@@ -274,12 +319,10 @@ int main(int argc, const char * argv[]) {
     for(int i=0;i<n;++i)
     {
         int num = getForwardNumber(startnode, values[i]);
-        reverse(values[i].begin(),values[i].end());
-        //cout << endl;
-        int revnum = getForwardNumber(endnode, values[i]);
+        int revnum = getBackwardNumber(endnode, values[i]);
         
         int temp = num*10+revnum;
-        reverse(values[i].begin(),values[i].end());
+        //reverse(values[i].begin(),values[i].end());
         cout << values[i] << endl;
         cout << num << endl;
         cout << revnum << endl;
